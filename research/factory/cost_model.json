@@ -1,0 +1,132 @@
+{
+  "instrument": "US100.cash (broker)",
+  "regime_bound": "16 quote days, one quiet 2026 regime, one instrument",
+  "spread_pt": {
+    "n_quotes": 333437,
+    "n_days": 16,
+    "all": {
+      "0.5": 1.4500000000007276,
+      "0.9": 1.8500000000021828,
+      "0.99": 1.9500000000007276
+    },
+    "rth": {
+      "0.5": 1.4500000000007276,
+      "0.9": 1.4500000000007276,
+      "0.99": 1.4500000000007276
+    },
+    "n_rth": 270325,
+    "by_day": {
+      "2026-07-17": [
+        16907,
+        1.4500000000007276
+      ],
+      "2026-07-20": [
+        9418,
+        1.6499999999978172
+      ],
+      "2026-07-21": [
+        6408,
+        1.75
+      ],
+      "2026-07-22": [
+        28435,
+        1.4500000000007276
+      ],
+      "2026-07-23": [
+        23808,
+        1.4500000000007276
+      ],
+      "2026-07-24": [
+        25412,
+        1.4500000000007276
+      ],
+      "2026-07-27": [
+        26238,
+        1.4500000000007276
+      ],
+      "2026-07-28": [
+        26977,
+        1.4500000000007276
+      ],
+      "2026-07-29": [
+        13324,
+        1.4500000000007276
+      ],
+      "2026-07-30": [
+        26539,
+        1.4500000000007276
+      ],
+      "2026-08-04": [
+        26860,
+        1.4500000000007276
+      ],
+      "2026-08-05": [
+        19320,
+        1.4500000000007276
+      ],
+      "2026-08-06": [
+        26835,
+        1.4500000000007276
+      ],
+      "2026-08-07": [
+        8716,
+        1.75
+      ],
+      "2026-08-10": [
+        21905,
+        1.4500000000007276
+      ],
+      "2026-08-11": [
+        26335,
+        1.4500000000007276
+      ]
+    }
+  },
+  "slippage_signal_to_fill_pt": {
+    "n": 42,
+    "unmatched_journal_rows": 1,
+    "no_second_tape": 1,
+    "fill_rows_without_usable_ts": 43,
+    "journal_rows_with_signal_ts": 44,
+    "n_cap_note": "n is capped at 44 by JOURNAL rows carrying a signal_ts, not by fill count; 42 of 44 are matched. Fill rows dropped for a missing timestamp cannot raise this cap (F128).",
+    "median": -0.125,
+    "mean": -0.6478571428572953,
+    "mean_ci95": [
+      -4.078333333333267,
+      2.612619047618431
+    ],
+    "sd": 11.336333888337611,
+    "p90": 12.62999999999738,
+    "p10": -13.880000000001019,
+    "latency_s_median": 25.645
+  },
+  "FORBIDDEN_intended_entry_to_fill_pt": {
+    "n": 70,
+    "median": 2.094999999999345,
+    "p90": 20.030000000002474,
+    "why_excluded": "measures the discretionary operator firing late, not execution (charter \u00a73-Phase-0). Shown for contrast; never summed in."
+  },
+  "vendor_basis_band_pt": {
+    "basis": -2.45,
+    "level_err_PDH_PDL_close": [
+      1.52,
+      3.56,
+      2.52
+    ],
+    "source": "GL-42"
+  },
+  "round_trip_cost_pt": {
+    "central": 1.2,
+    "adverse_p90": 26.71,
+    "composition": "entry half-spread + entry slippage + exit half-spread + exit slippage (exit assumed symmetric to entry \u2014 UNMEASURED, exits were discretionary)",
+    "central_is": "a MEDIAN-based CONVENTION, not a measurement. Expectancy is E[gross]-E[cost] so the MEAN is the expectancy-correct statistic; at this n the mean's CI is wider than the quantity itself (see slippage.mean_ci95), so the median is used for robustness. It errs CONSERVATIVE \u2014 median cost exceeds mean cost \u2014 which is the correct direction for a falsifier. Do not quote it as measured.",
+    "adverse_p90_is": "an UPPER BOUND, not a percentile: it pairs the p90 spread with the p90 slippage, and the sum of two p90s is not the p90 of a sum. For an actual percentile use true_round_trip.p90.",
+    "true_round_trip": {
+      "p50": 1.2,
+      "p90": 19.1,
+      "p99": 34.9,
+      "mean_based_central": 0.15,
+      "method": "20000 draws, seed 20260813; entry+exit slippage drawn independently from the empirical n=42 distribution, exit symmetric to entry as declared"
+    }
+  }
+}

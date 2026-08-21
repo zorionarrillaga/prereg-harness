@@ -1,0 +1,16 @@
+{
+  "_what_this_is": "THE STOPPING RULE, written down BEFORE the search, in machine-readable form. bin/edge_factory_gauge.py reads these keys and nothing else; no number here is hardcoded anywhere in the code. That is the whole point: a research programme that decides when to stop AFTER seeing its results has not decided anything. Changing a value here is a deliberate, dated, reviewable act.",
+  "_how_to_change_it": "By the same authority that ratified it, citing new evidence, in a dated record. 'Let us evaluate as we go' routes THROUGH that act, never around it — the failure mode being prevented is a budget that quietly extends every time it is about to bind.",
+  "d_record": "D048",
+  "phase01_start": "2026-08-11",
+  "phase01_cap_days": 14,
+  "phase2_start": null,
+  "phase2_gate": "ON-DEMAND — the operator starts the clock; phase2_start stays null until then",
+  "phase2_budget_weeks": 8,
+  "phase2_budget_rounds": 3,
+  "mue_r_net": 0.15,
+  "mue_min_signals_per_week": 2,
+  "mue_min_signals_per_week_semantics": "PORTFOLIO-WIDE. For a multi-instrument candidate the floor is counted across the whole universe the rule trades, not per leg — usability is a property of the rule as OPERATED, and a per-leg rate describes a position nobody holds in isolation. ⚠ THIS IS THE WEAKER READING AND IT IS STATED AS SUCH: under the registered day-clustered bootstrap, correlated legs give a NARROWER interval (0.73x at rho .6), so portfolio counting makes both bars easier at once. An earlier grounds for this same choice — 'correlated legs pay for correlation in a wider CI' — was measured FALSE by an external seat and withdrawn.",
+  "mue_min_signals_per_week_grounds": "USABILITY, NOT POWER. The blocking floor is operational: a rule that fires less often than this is not usable, whatever its edge. The POWER requirement is a separate, larger, candidate-specific number and it is NOT a gate: setting mde = 2*MUE in mde = B + Z*sigma_R/sqrt(n) with B = MUE gives n_needed = (Z*sigma_R/MUE)^2 and rate_needed = n_needed/holdout_weeks. The pre-screen PRINTS it beside the floor, marked DIAGNOSTIC. ⚠ It scales as sigma_R^2, so any headline 'signals per week' figure is one instrument's number at ITS sigma_R and holdout length and must not be quoted as a constant. Raising the blocking floor to the power number was considered and rejected: it would retroactively fail candidates that passed and kill nearly everything at pre-screen, which costs evidence.",
+  "phase2_gate_grounds": "ON-DEMAND. The operator starts the Phase-2 clock when a registered candidate is ready to walk forward; phase2_start stays null until then. An automatic 'candidate-ready' token was drafted and WITHDRAWN after external refutation: nothing in the code parses the fields it would have keyed on, so applied mechanically it would have read ELIGIBLE on an empty slate. An honest absence beats a confident readout with nothing under it."
+}
