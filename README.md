@@ -32,10 +32,32 @@ paths are the [no-look-ahead backtest walker](bin/factory_backtest.py),
 [matched-placebo scorer](bin/factory_scorer.py),
 [known-null and planted-edge generator](bin/factory_synthetic.py),
 [not-blind gate](bin/factory_notblind.py), and
-[hash-chained experiment registry](bin/factory_registry.py). A sanitized
+[hash-chained experiment registry](bin/factory_registry.py). A selected
 [Nexus LLM extract](examples/nexus_llm_extract/) contains the actual generated-then-patched
 strategy, its manifest, and the provenance schema used to bind a result to its strategy,
 execution, fill, exit and risk assumptions.
+
+It does not include a Claude API client or a general executor for model-generated Python. The
+historical executor's structural checks did not make arbitrary code safe and did not establish
+that generated logic was reachable. The AI guide therefore uses a reviewed, frozen specification
+as the boundary between proposer and verifier.
+
+## Current verification status
+
+Fresh review on 2026-09-24, from this public checkout:
+
+- Python compilation completed for every published module and the Nexus provenance schema.
+- The synthetic generator verification passed.
+- The backtest, scorer and confidence-interval selftests passed. Five backtest checks tied to the
+  absent licensed vendor corpus reported `NOT RUN`, as designed.
+- The registry suite passed **10/10**, the synthetic mutation suite passed **24/24**, and the full
+  harness mutation suite passed **68/68**.
+- The twelve-day not-blind demonstration returned **3/7 and exit 1**, as documented: four null
+  conclusions were refused for insufficient power. That failure is the expected result at the
+  deliberately small demonstration size.
+
+This review did not run the 250-day not-blind configuration, repopulate licensed vendor data, or
+establish calibration on real microstructure. Those remain outside the evidence shipped here.
 
 ---
 
@@ -196,7 +218,8 @@ registry: +row #2 verdict 'notblind-20260821T145056' chain=d5bb4476edd9
      That seat has not run.
 ```
 
-Reproduce: `python3 bin/factory_notblind.py gate --days 12 --seed 7`
+Reproduce without appending a new registry row:
+`python3 bin/factory_notblind.py gate --days 12 --seed 7 --no-register`
 
 **Read that output as the instrument working.** Three of the seven checks are answerable at
 twelve days, and all three answer: the plant is detected on the registered arm, the cost is
@@ -453,6 +476,12 @@ One ruler, imported everywhere, is a load-bearing constraint rather than tidines
 lives in the backtest and a near-copy lives in the scorer, a verdict can move because the ruler
 changed rather than because the tape did, and no test in the suite can see the difference.
 
+The registry's hash chain is not a signature. It detects ordinary edits or deleted rows when
+checked against an existing Git commit; a party able to rewrite the repository can recompute the
+entire chain. Likewise, the registry records a declared holdout boundary but cannot enforce data
+access or prevent a second look. Use remote commits, signed tags, access controls, or an
+independently retained registry when those threats matter.
+
 ---
 
 ## Running it
@@ -461,7 +490,8 @@ Python 3.9+ (`zoneinfo` is the binding requirement). No dependencies outside the
 
 ```bash
 python3 bin/factory_synthetic.py verify                    # the known-null device measures both its values
-python3 bin/factory_notblind.py gate --days 12 --seed 7    # fast demo (under-powered, and says so)
+# fast demonstration: deliberately under-powered and does not append to the registry
+python3 bin/factory_notblind.py gate --days 12 --seed 7 --no-register
 python3 bin/factory_notblind.py gate                       # the powered configuration, GATE_DAYS = 250 (over an hour)
 python3 bin/factory_backtest.py selftest                   # walker invariants
 python3 bin/factory_scorer.py selftest                     # positive / negative / anti controls

@@ -1,4 +1,4 @@
-# Sanitized Nexus LLM pipeline extract
+# Selected Nexus LLM pipeline extract
 
 These are actual artifacts from the earlier Nexus/FORGE3 strategy-generation pipeline. They are
 included to substantiate the worked failure case and make the useful provenance mechanism
@@ -15,6 +15,19 @@ inspectable.
 - [`spec_v3.py`](spec_v3.py) is the provenance schema used by the evaluator. It binds each result
   to strategy, execution, fill, exit and risk-model identifiers and hashes, records simulation
   parity status and source lineage, and carries the number of trials that produced the spec.
+
+## Preserved provenance defects
+
+The source and manifest disagree. The manifest still says `LLM_PROPOSED` and records only the
+first repair, while the source says `LLM_PROPOSED_HUMAN_PATCHED` and records both repairs. That
+mismatch existed in the historical artifact and is preserved here because silently correcting it
+would make the provenance look stronger than it was. Do not treat the manifest as proof that the
+source is untouched model output.
+
+`spec_v3.py` is also a historical schema, not a hardened standalone validator. It requires a
+non-empty bound-configuration hash but does not recompute that hash itself; the original writer
+and linter supplied that boundary. A new implementation should compute the hash from canonical
+configuration content at the write boundary and reject rather than coerce malformed trial counts.
 
 The strategy module is a historical component, not a standalone trading program. The original
 compiler injected `_BaseStrategy` and `Intent`; those execution-system dependencies are

@@ -19,6 +19,13 @@ The practical loop is:
 This loop can reject a strategy. It cannot establish that future returns or live execution will
 match a historical simulation.
 
+This repository is not a turnkey Claude integration. It does not call an LLM, execute generated
+Python, supply licensed market data, or contain a profitable strategy. The model-to-code executor
+from the historical system is deliberately absent because its AST allow-list was not a secure
+sandbox and its runtime probe missed the semantic defects documented below. The intended boundary
+is: obtain a structured proposal from the model, review and freeze it, implement it behind a
+constrained adapter, and let this repository judge the resulting signals.
+
 ## Ten-minute orientation
 
 No third-party Python packages are required.
@@ -28,7 +35,7 @@ No third-party Python packages are required.
 python3 bin/factory_synthetic.py verify
 
 # 2. See whether the scorer can detect an effect and refuse an under-powered conclusion.
-python3 bin/factory_notblind.py gate --days 12 --seed 7
+python3 bin/factory_notblind.py gate --days 12 --seed 7 --no-register
 
 # 3. Inspect the invariants of the no-look-ahead walker and placebo scorer.
 python3 bin/factory_backtest.py selftest
@@ -44,7 +51,9 @@ python3 bin/factory_registry.py count
 
 The twelve-day not-blind demonstration is intentionally small. If it cannot support a conclusion,
 it prints `INSUFFICIENT POWER` and the achieved MDE. The powered default is deliberately much
-slower:
+slower. The orientation command uses `--no-register` so a demonstration does not modify the
+tracked experiment registry. Omit that flag only when the run is intended to become part of the
+programme's multiplicity count.
 
 ```bash
 python3 bin/factory_notblind.py gate
@@ -87,6 +96,13 @@ The commit is part of the method: it makes later changes visible. Registration a
 make an arbitrary parameter defensible, so sweep every declared free parameter and report the
 whole grid or its predeclared summary rather than its maximum.
 
+The registry is an audit aid, not cryptographic attestation or data-access control. Its hash chain
+detects ordinary edits and deletions when checked against an existing commit, but anyone able to
+rewrite the repository can recompute the chain. It also cannot prevent a person or program from
+opening a holdout twice. Keep holdout data outside the search process and anchor registrations in
+a remote commit, signed tag, or other independently retained record when stronger evidence is
+needed.
+
 ## Keep model code outside the verifier boundary
 
 An AST allow-list or a successful run over synthetic bars is not a secure sandbox, and it does
@@ -100,7 +116,7 @@ expected intent is emitted. The worked
 generated strategy ran without exceptions yet contained two independent conditions that made its
 entries nearly unreachable.
 
-The sanitized [`nexus_llm_extract`](examples/nexus_llm_extract/) contains the actual historical
+The selected [`nexus_llm_extract`](examples/nexus_llm_extract/) contains the actual historical
 strategy source, its proposal manifest, and the schema that tied evaluated results to the exact
 strategy, execution, fill, exit and risk-model versions. The strategy file is the final
 human-patched artifact; its header preserves both original defects and their repairs.

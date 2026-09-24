@@ -117,7 +117,8 @@ def main() -> None:
     print(f"true edge required         {needed_edge:+.3f} R/trade for "
           f"{args.power:.0%} power to put the {args.confidence:.0%} CI lower bound above the MUE")
     print()
-    print(f"to detect a true edge of   {args.power_target_r:+.3f} R/trade above that MUE")
+    print(f"when the true edge is      {args.power_target_r:+.3f} R/trade")
+    print(f"and the CI must clear      {args.mue_r:+.3f} R/trade")
     print(f"effective n required       {needed_n}")
     print(f"raw signals/week required  {needed_rate:.2f} over {args.holdout_weeks:.1f} weeks")
     print()
