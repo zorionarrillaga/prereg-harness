@@ -20,6 +20,13 @@ failure mode points at "cannot conclude" rather than at "confirmed".
 
 Nothing in this repository connects to a broker, places an order, or reads an account.
 
+If an AI model is proposing strategies, start with
+[`AI_QUANT_START_HERE.md`](AI_QUANT_START_HERE.md). It shows how to keep the proposer separate
+from the judge, freeze a strategy before testing it, reject impossible research targets early,
+and use this harness as a falsifier. The accompanying case study documents an LLM-generated
+strategy that passed schema and runtime checks while two semantic bugs made its entries nearly
+unreachable.
+
 ---
 
 ## What it decides, and what it refuses to conclude
@@ -402,6 +409,14 @@ bin/
   factory_data.py          vendor loader: per-instrument divisor and plausibility band, declared then verified
   edge_factory_gauge.py    the stopping rule, machine-read from budget.json
   design_shape_check.py    a spec lint: every derived constraint must name what it excludes
+  factory_target_arithmetic.py
+                            translate edge and frequency targets into Sharpe/breadth geometry
+AI_QUANT_START_HERE.md      a short AI-proposer -> independent-verifier workflow
+examples/
+  AI_STRATEGY_SPEC_TEMPLATE.md
+                            freeze the model's proposal before any outcome is inspected
+  LLM_CHANNEL_BREAKOUT_FAILURE.md
+                            two semantic bugs that ordinary runtime checks missed
 tests/                     mutation proofs for the registry, the synthetic device, and the harness
 research/factory/
   budget.json              the stopping rule, in the form the gauge reads
@@ -445,6 +460,7 @@ python3 bin/factory_registry.py verify                     # walk and recompute 
 python3 bin/factory_registry.py count                      # the multiplicity denominator
 python3 bin/factory_findings.py index                      # regenerate FINDINGS.md from the ledger
 python3 bin/edge_factory_gauge.py                          # the stopping rule, read from budget.json
+python3 bin/factory_target_arithmetic.py                   # is the requested target plausible?
 bash tests/test_factory_synthetic.sh                       # mutation proofs
 bash tests/test_factory_registry.sh
 bash tests/test_factory_harness.sh                         # slow
