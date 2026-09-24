@@ -3,6 +3,29 @@
 An AI model can propose hypotheses, rules and code quickly. It should not grade its own work.
 This repository supplies an independent falsification path for the second job.
 
+## The code
+
+The runnable verifier lives in [`bin/`](bin/). These are the main implementation files:
+
+| File | What it implements |
+|---|---|
+| [`factory_backtest.py`](bin/factory_backtest.py) | A bar-by-bar trade walker, explicit fill and cost assumptions, and the `backtest(corpus, rule, ...)` entry point. |
+| [`factory_scorer.py`](bin/factory_scorer.py) | Placebo entries matched to candidate entries, percentile scores, clustered intervals, and power-aware verdicts. |
+| [`factory_synthetic.py`](bin/factory_synthetic.py) | Reproducible edge-free and planted-edge market data plus example rules. |
+| [`factory_notblind.py`](bin/factory_notblind.py) | A gate that checks whether the scorer detects a known effect and declines unsupported null claims. |
+| [`factory_registry.py`](bin/factory_registry.py) | Frozen specification hashes and an append-only experiment history. |
+
+The [mutation checks](tests/) deliberately break these components to see whether their guards
+catch the defect. The [Nexus extract](examples/nexus_llm_extract/) contains an actual
+LLM-generated strategy after two human repairs, its historical manifest, and its result
+provenance schema. That extract is a failure case, not a runnable Claude integration.
+
+If you only open three files, start with the
+[example signal rules](bin/factory_synthetic.py), the
+[`backtest` function](bin/factory_backtest.py), and the
+[placebo scorer](bin/factory_scorer.py). A new strategy must be adapted to the rule interface;
+the guide below explains what should be frozen and checked before doing that.
+
 The practical loop is:
 
 1. The model writes a complete strategy specification, including the negative result that would
