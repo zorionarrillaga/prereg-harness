@@ -27,6 +27,16 @@ and use this harness as a falsifier. The accompanying case study documents an LL
 strategy that passed schema and runtime checks while two semantic bugs made its entries nearly
 unreachable.
 
+This repository contains the implementation, not only the method description. The central code
+paths are the [no-look-ahead backtest walker](bin/factory_backtest.py),
+[matched-placebo scorer](bin/factory_scorer.py),
+[known-null and planted-edge generator](bin/factory_synthetic.py),
+[not-blind gate](bin/factory_notblind.py), and
+[hash-chained experiment registry](bin/factory_registry.py). A sanitized
+[Nexus LLM extract](examples/nexus_llm_extract/) contains the actual generated-then-patched
+strategy, its manifest, and the provenance schema used to bind a result to its strategy,
+execution, fill, exit and risk assumptions.
+
 ---
 
 ## What it decides, and what it refuses to conclude
@@ -417,6 +427,7 @@ examples/
                             freeze the model's proposal before any outcome is inspected
   LLM_CHANNEL_BREAKOUT_FAILURE.md
                             two semantic bugs that ordinary runtime checks missed
+  nexus_llm_extract/        actual Nexus strategy, manifest and result-provenance schema
 tests/                     mutation proofs for the registry, the synthetic device, and the harness
 research/factory/
   budget.json              the stopping rule, in the form the gauge reads

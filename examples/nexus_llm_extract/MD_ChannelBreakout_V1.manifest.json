@@ -1,0 +1,21 @@
+{
+  "accepted_utc": "2026-04-20T20:00:00Z",
+  "direction_prior": "both",
+  "hold_window_bars": 1440,
+  "paper_ids": [
+    "03_HAWKES_LEADLAG",
+    "01_MICROSTRUCTURE",
+    "049_ai_signal_engine_gemini_study"
+  ],
+  "param_ranges": {
+    "lookback_bars": [120, 7200],
+    "width_multiplier": [1.0, 3.0],
+    "volatility_threshold": [0.0, 0.005]
+  },
+  "primitive_id": "MD_ChannelBreakout_V1",
+  "rationale": "Multi-day high/low channel breakout with avg-TR volatility filter. Long/short on close above (below) the PRIOR N-bar channel plus width*channel-size buffer. Longer-horizon fills-with-direction per BP#43 §17.8; not counter-trend LIMIT. N+18c audit patch: channel window excludes the current bar (standard Donchian); original LLM emission included current bar which made both breakout legs unreachable.",
+  "n18c_patch_notes": "max_high / min_low computed over self.highs[:-1] / self.lows[:-1] instead of full window; preserves LLM strategy concept, fixes off-by-one that made triggers unreachable.",
+  "source_py": "MD_ChannelBreakout_V1.py",
+  "status": "LLM_PROPOSED",
+  "target_family": "momentum_multiday"
+}

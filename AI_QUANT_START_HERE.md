@@ -100,6 +100,11 @@ expected intent is emitted. The worked
 generated strategy ran without exceptions yet contained two independent conditions that made its
 entries nearly unreachable.
 
+The sanitized [`nexus_llm_extract`](examples/nexus_llm_extract/) contains the actual historical
+strategy source, its proposal manifest, and the schema that tied evaluated results to the exact
+strategy, execution, fill, exit and risk-model versions. The strategy file is the final
+human-patched artifact; its header preserves both original defects and their repairs.
+
 ## What to report
 
 For every candidate, retain:

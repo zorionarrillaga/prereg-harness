@@ -5,6 +5,9 @@ Donchian breakout with an ATR filter. Its response passed JSON-schema validation
 class loading, and a runtime check over 100 synthetic bars. It then compiled and reached the
 backtest without raising an exception.
 
+The final historical source, proposal manifest, and result-provenance schema are included in
+[`nexus_llm_extract/`](nexus_llm_extract/). The source header records the two human repairs.
+
 The first evaluation produced zero trades.
 
 ## Bug 1: the comparison included the current bar
